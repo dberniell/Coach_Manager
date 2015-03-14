@@ -1,6 +1,6 @@
 # Coach_Manager
 A web app for managing your team
-================================
+________________________________
 
 This is a web app to help handball coaches managing their teams.
 The main functionalities to implement are 3:
