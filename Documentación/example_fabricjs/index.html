@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <header>
+        <input type="button" value="create red circle" id="red_circle"/>
+        <input type="button" value="create ball" id="ball"/>
+        <input type="button" value="create blue circle" id="blue_circle"/>
+        <input type="button" value="serialize" id="serialize"/>
+        <input type="button" value="draw" id="draw"/>
+        <input type="button" value="animate ball" id="animate"/>
+    </header>
+    <canvas id="canvas" width="350" height="550"></canvas>
+    <script src="js/fabric.js"></script>
+    <script type="text/javascript">
+        // create a wrapper around native canvas element (with id="c")
+        var canvas = new fabric.Canvas('canvas', { selection: false });
+        var _json;
+        canvas.setBackgroundImage('images/pista-balonmano-blanco.png', canvas.renderAll.bind(canvas), {
+
+            scaleY: canvas.height / 1024,
+            scaleX: canvas.width / 558
+
+        });
+        var ball;
+
+    </script>
+    <script src="test.js"></script>
+    <script type="text/javascript">
+        document.getElementById('red_circle').addEventListener('click', function (){
+            canvas.isDrawingMode = false;
+            // create a rectangle object
+            var circle = new fabric.Circle({
+                radius: 12, fill: 'red', left: 100, top: 100
+            });
+
+            // "add" rectangle onto canvas
+            canvas.add(circle);
+        });
+
+        document.getElementById('ball').addEventListener('click', function (){
+            canvas.isDrawingMode = false;
+            fabric.Image.fromURL('images/ball.png', function(oImg) {
+                oImg.set({
+                    left: 0,
+                    top: 0,
+                    angle: 0,
+                    opacity: 1,
+                    scaleX: 0.2,
+                    scaleY: 0.2
+                });
+                canvas.add(oImg);
+                ball = oImg;
+                console.log(JSON.stringify(oImg));
+            });
+        });
+        document.getElementById('blue_circle').addEventListener('click', function (){
+            canvas.isDrawingMode = false;
+            // create a rectangle object
+            var circle = new fabric.Circle({
+                radius: 12, fill: 'blue', left: 100, top: 200
+            });
+
+            // "add" rectangle onto canvas
+            canvas.add(circle);
+        });
+        document.getElementById('draw').addEventListener('click', function (){
+            canvas.isDrawingMode = true;
+            canvas.freeDrawingBrush.width = 5;
+            canvas.freeDrawingBrush.color = "#ff0000";
+        });
+        document.getElementById('serialize').addEventListener('click', function (){
+            canvas.isDrawingMode = false;
+           _json = JSON.stringify(canvas);
+            canvas.clear();
+            setTimeout(function (){
+                canvas.loadFromJSON(_json);
+            }, 2000);
+        });
+        document.getElementById('animate').addEventListener('click', function (){
+            fabric.Image.fromURL('images/ball.png', function(oImg) {
+                oImg.set({
+                    left: 0,
+                    top: 0,
+                    angle: 0,
+                    opacity: 1,
+                    scaleX: 0.2,
+                    scaleY: 0.2
+                });
+                canvas.add(oImg);
+                oImg && oImg.animate({
+                    'left': post.left,
+                    opacity: 1,
+                    angle: 0,
+                    scaleX: 1,
+                    scaleY: 1
+                }, {
+                    duration: 1500,
+                    onChange: canvas.renderAll.bind(canvas),
+                    onComplete: animate
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>
